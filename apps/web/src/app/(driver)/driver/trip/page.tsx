@@ -12,11 +12,11 @@ import { api } from '@/lib/api';
 
 type DriverTripStatus = 'accepted' | 'en_route' | 'arrived' | 'in_progress';
 
-const statusConfig: Record<DriverTripStatus, { label: string; color: string; action: string }> = {
-  accepted: { label: 'Ve a recoger al pasajero', color: '#6C63FF', action: 'Llegé al origen' },
-  en_route: { label: 'En camino al pasajero', color: '#6C63FF', action: 'Llegé al origen' },
-  arrived: { label: 'Esperando al pasajero', color: '#FFA502', action: 'Iniciar viaje' },
-  in_progress: { label: 'Viaje en progreso', color: '#00D4AA', action: 'Completar viaje' },
+const statusConfig: Record<DriverTripStatus, { label: string; dotClass: string; action: string }> = {
+  accepted: { label: 'Ve a recoger al pasajero', dotClass: 'bg-primary shadow-glow-accent animate-pulse', action: 'Llegé al origen' },
+  en_route: { label: 'En camino al pasajero', dotClass: 'bg-primary shadow-glow-accent animate-pulse', action: 'Llegé al origen' },
+  arrived: { label: 'Esperando al pasajero', dotClass: 'bg-[#FFA502] shadow-[0_0_10px_#FFA502] animate-pulse', action: 'Iniciar viaje' },
+  in_progress: { label: 'Viaje en progreso', dotClass: 'bg-secondary shadow-glow-secondary animate-pulse', action: 'Completar viaje' },
 };
 
 export default function DriverTripPage() {
@@ -31,6 +31,7 @@ export default function DriverTripPage() {
 
   useEffect(() => {
     if (!activeRide) { router.push('/driver'); return; }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeRide]);
 
   useEffect(() => {
@@ -59,8 +60,7 @@ export default function DriverTripPage() {
         setActiveRide(null);
         router.push('/driver');
       }
-    } catch {
-    } finally {
+    } catch {} finally {
       setLoading(false);
     }
   };
@@ -70,75 +70,63 @@ export default function DriverTripPage() {
   const cfg = statusConfig[status];
 
   return (
-    <div className="h-screen bg-[#0A0A0F] flex flex-col overflow-hidden">
+    <div className="h-screen bg-background flex flex-col overflow-hidden">
       <div className="flex-1 relative">
         <MapView center={center} userLocation={center} className="w-full h-full" />
 
         <div className="absolute top-4 left-4 right-4 safe-top">
-          <motion.div
-            key={status}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex items-center gap-3 bg-[rgba(17,17,24,0.95)] backdrop-blur-xl border border-[rgba(255,255,255,0.08)] rounded-2xl px-4 py-3"
-          >
-            <div
-              className="w-3 h-3 rounded-full flex-shrink-0 animate-pulse"
-              style={{ backgroundColor: cfg.color, boxShadow: `0 0 10px ${cfg.color}` }}
-            />
+          <motion.div key={status} initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="glass-strong rounded-2xl px-4 py-3 flex items-center gap-3">
+            <div className={`w-3 h-3 rounded-full flex-shrink-0 ${cfg.dotClass}`} />
             <span className="text-sm font-semibold">{cfg.label}</span>
           </motion.div>
         </div>
       </div>
 
       <motion.div
-        initial={{ y: '100%' }}
-        animate={{ y: 0 }}
+        initial={{ y: '100%' }} animate={{ y: 0 }}
         transition={{ type: 'spring', stiffness: 400, damping: 40 }}
-        className="bg-[#111118] border-t border-[rgba(255,255,255,0.08)] rounded-t-3xl px-5 pt-4 pb-8"
+        className="bg-surface border-t border-white/[0.08] rounded-t-3xl px-5 pt-4 pb-8"
       >
         <div className="sheet-handle mb-4" />
 
         <div className="flex items-center gap-4 mb-4">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#00D4AA] to-[#6C63FF] flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-cta flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
             {activeRide.passenger_name?.[0]?.toUpperCase() ?? 'P'}
           </div>
           <div className="flex-1">
             <div className="font-bold">{activeRide.passenger_name ?? 'Pasajero'}</div>
-            <div className="text-xs text-[#8B8B9E] mt-0.5">
+            <div className="text-xs text-muted-foreground mt-0.5">
               {status === 'in_progress' ? 'En camino al destino' : 'Esperando en origen'}
             </div>
           </div>
           <div className="flex gap-2">
-            <button className="w-11 h-11 rounded-xl bg-[#1A1A24] flex items-center justify-center border border-[rgba(255,255,255,0.08)] hover:border-[rgba(0,212,170,0.3)] transition-colors">
-              <Phone size={18} className="text-[#00D4AA]" />
+            <button className="w-11 h-11 rounded-xl bg-surface-2 flex items-center justify-center border border-white/[0.08] hover:border-secondary/30 transition-colors">
+              <Phone size={18} className="text-secondary" />
             </button>
-            <button className="w-11 h-11 rounded-xl bg-[#1A1A24] flex items-center justify-center border border-[rgba(255,255,255,0.08)] hover:border-[rgba(0,212,170,0.3)] transition-colors">
-              <MessageCircle size={18} className="text-[#00D4AA]" />
+            <button className="w-11 h-11 rounded-xl bg-surface-2 flex items-center justify-center border border-white/[0.08] hover:border-secondary/30 transition-colors">
+              <MessageCircle size={18} className="text-secondary" />
             </button>
           </div>
         </div>
 
         <div className="space-y-2 mb-4">
-          <div className="flex items-center gap-3 bg-[#1A1A24] rounded-xl px-4 py-3">
-            <MapPin size={14} className="text-[#6C63FF] flex-shrink-0" />
-            <span className="text-sm text-[#8B8B9E] truncate flex-1">{activeRide.origin_address}</span>
+          <div className="flex items-center gap-3 bg-surface-2 rounded-xl px-4 py-3">
+            <MapPin size={14} className="text-primary flex-shrink-0" />
+            <span className="text-sm text-muted-foreground truncate flex-1">{activeRide.origin_address}</span>
           </div>
-          <div className="flex items-center gap-3 bg-[#1A1A24] rounded-xl px-4 py-3">
-            <Flag size={14} className="text-[#00D4AA] flex-shrink-0" />
-            <span className="text-sm text-[#8B8B9E] truncate flex-1">{activeRide.destination_address}</span>
-            <div className="ml-auto font-mono font-bold text-[#6C63FF]">${activeRide.final_price}</div>
+          <div className="flex items-center gap-3 bg-surface-2 rounded-xl px-4 py-3">
+            <Flag size={14} className="text-secondary flex-shrink-0" />
+            <span className="text-sm text-muted-foreground truncate flex-1">{activeRide.destination_address}</span>
+            <div className="ml-auto font-mono font-bold text-primary">${activeRide.final_price}</div>
           </div>
         </div>
 
         <button
           onClick={handleAction}
           disabled={loading}
-          className="w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 disabled:opacity-50 transition-all"
-          style={{
-            background: status === 'in_progress'
-              ? 'linear-gradient(135deg, #2ED573, #00D4AA)'
-              : 'linear-gradient(135deg, #6C63FF, #00D4AA)',
-          }}
+          className={`w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 disabled:opacity-50 transition-all ${
+            status === 'in_progress' ? 'bg-[linear-gradient(135deg,#2ED573,#00D4AA)]' : 'bg-gradient-cta'
+          }`}
         >
           {loading ? (
             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

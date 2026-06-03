@@ -11,17 +11,15 @@ interface LocationInputsProps {
   onSwap: () => void
 }
 
-export function LocationInputs({
-  pickup,
-  destination,
-  onPickupChange,
-  onDestinationChange,
-  onSwap,
-}: LocationInputsProps) {
+export function LocationInputs({ pickup, destination, onPickupChange, onDestinationChange, onSwap }: LocationInputsProps) {
   return (
     <div className="relative flex flex-col gap-3">
       <div className="flex items-center gap-3 rounded-xl bg-muted px-4 py-3 transition-shadow focus-within:ring-1 focus-within:ring-primary/50">
-        <div className="h-3 w-3 rounded-full bg-primary shadow-[0_0_10px_rgba(108,99,255,0.6)]" aria-hidden="true" />
+        <div
+          className="h-3 w-3 rounded-full bg-primary flex-shrink-0"
+          style={{ boxShadow: '0 0 10px rgb(var(--color-primary-rgb)/0.6)' }}
+          aria-hidden="true"
+        />
         <label htmlFor="pickup-input" className="sr-only">Punto de recogida</label>
         <input
           id="pickup-input"
@@ -44,7 +42,11 @@ export function LocationInputs({
       </motion.button>
 
       <div className="flex items-center gap-3 rounded-xl bg-muted px-4 py-3 transition-shadow focus-within:ring-1 focus-within:ring-primary/50">
-        <div className="h-3 w-3 rounded-full bg-secondary shadow-[0_0_10px_rgba(0,212,170,0.6)]" aria-hidden="true" />
+        <div
+          className="h-3 w-3 rounded-full bg-secondary flex-shrink-0"
+          style={{ boxShadow: '0 0 10px rgb(var(--color-secondary-rgb)/0.6)' }}
+          aria-hidden="true"
+        />
         <label htmlFor="destination-input" className="sr-only">Destino</label>
         <input
           id="destination-input"

@@ -5,12 +5,14 @@
 @tailwind utilities;
 
 :root {
-  /* ── Brand color tokens (defaults = mobilidad; overridden per-brand by layout.tsx) ── */
+  /* ── Brand color tokens ──
+     Defaults = mobilidad brand. layout.tsx injects per-brand overrides in <head>.
+     RGB channels are space-separated for CSS4 rgb(r g b / alpha) syntax. */
   --color-primary: #6C63FF;
-  --color-primary-rgb: 108, 99, 255;
+  --color-primary-rgb: 108 99 255;
   --color-primary-foreground: #FFFFFF;
   --color-secondary: #00D4AA;
-  --color-secondary-rgb: 0, 212, 170;
+  --color-secondary-rgb: 0 212 170;
   --color-secondary-foreground: #0A0A0F;
   --color-accent: #6C63FF;
   --color-background: #0A0A0F;
@@ -23,7 +25,7 @@
   --color-warning: #F59E0B;
   --color-error: #EF4444;
 
-  /* ── Legacy aliases for existing utility classes ── */
+  /* ── Legacy aliases ── */
   --bg: var(--color-background);
   --surface: var(--color-surface);
   --surface-2: #1A1A24;
@@ -65,11 +67,11 @@ body {
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--surface); }
-::-webkit-scrollbar-thumb { background: rgba(var(--color-primary-rgb), 0.4); border-radius: 3px; transition: background 0.2s; }
-::-webkit-scrollbar-thumb:hover { background: rgba(var(--color-primary-rgb), 0.7); }
-* { scrollbar-width: thin; scrollbar-color: rgba(var(--color-primary-rgb), 0.4) var(--surface); }
+::-webkit-scrollbar-thumb { background: rgb(var(--color-primary-rgb) / 0.4); border-radius: 3px; transition: background 0.2s; }
+::-webkit-scrollbar-thumb:hover { background: rgb(var(--color-primary-rgb) / 0.7); }
+* { scrollbar-width: thin; scrollbar-color: rgb(var(--color-primary-rgb) / 0.4) var(--surface); }
 
-::selection { background: rgba(var(--color-primary-rgb), 0.3); color: #fff; }
+::selection { background: rgb(var(--color-primary-rgb) / 0.3); color: #fff; }
 
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
 
@@ -92,7 +94,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.2; letter-spacing: -0.
   cursor: pointer;
   transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
 }
-.btn-gradient:hover { opacity: 0.92; transform: translateY(-1px); box-shadow: 0 8px 25px rgba(var(--color-primary-rgb), 0.4); }
+.btn-gradient:hover { opacity: 0.92; transform: translateY(-1px); box-shadow: 0 8px 25px rgb(var(--color-primary-rgb) / 0.4); }
 .btn-gradient:active { transform: translateY(0); }
 
 .glass {
@@ -124,8 +126,8 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.2; letter-spacing: -0.
 }
 @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
 
-.glow-accent { box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.4); }
-.glow-secondary { box-shadow: 0 0 20px rgba(var(--color-secondary-rgb), 0.4); }
+.glow-accent { box-shadow: 0 0 20px rgb(var(--color-primary-rgb) / 0.4); }
+.glow-secondary { box-shadow: 0 0 20px rgb(var(--color-secondary-rgb) / 0.4); }
 .glow-success { box-shadow: 0 0 20px rgba(34, 197, 94, 0.4); }
 
 @keyframes pulseGlow {
@@ -147,7 +149,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.2; letter-spacing: -0.
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 .input-dark::placeholder { color: var(--text-muted); }
-.input-dark:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.15); }
+.input-dark:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgb(var(--color-primary-rgb) / 0.15); }
 
 .bottom-sheet { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top-left-radius: 24px; border-top-right-radius: 24px; border-top: 1px solid var(--border); z-index: 50; }
 .bottom-sheet-handle { width: 36px; height: 4px; background: rgba(255, 255, 255, 0.2); border-radius: 2px; margin: 10px auto; }
@@ -175,9 +177,9 @@ h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.2; letter-spacing: -0.
 .fade-in-up { animation: fadeInUp 0.5s ease-out forwards; }
 
 input[type='range'] { -webkit-appearance: none; appearance: none; height: 4px; border-radius: 2px; background: var(--surface-3); outline: none; }
-input[type='range']::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--gradient-cta); cursor: pointer; box-shadow: 0 2px 10px rgba(var(--color-primary-rgb), 0.5); transition: transform 0.2s; }
+input[type='range']::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--gradient-cta); cursor: pointer; box-shadow: 0 2px 10px rgb(var(--color-primary-rgb) / 0.5); transition: transform 0.2s; }
 input[type='range']::-webkit-slider-thumb:hover { transform: scale(1.2); }
-input[type='range']::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: var(--gradient-cta); cursor: pointer; border: none; box-shadow: 0 2px 10px rgba(var(--color-primary-rgb), 0.5); }
+input[type='range']::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: var(--gradient-cta); cursor: pointer; border: none; box-shadow: 0 2px 10px rgb(var(--color-primary-rgb) / 0.5); }
 
 .no-select { -webkit-user-select: none; user-select: none; }
 
@@ -205,15 +207,15 @@ input[type='range']::-moz-range-thumb { width: 22px; height: 22px; border-radius
   content: '';
   position: absolute;
   inset: -8px;
-  background: radial-gradient(ellipse at center, rgba(var(--color-primary-rgb), 0.4) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgb(var(--color-primary-rgb) / 0.4) 0%, transparent 70%);
   border-radius: 20px;
   z-index: -1;
   filter: blur(12px);
 }
 
 @keyframes pulse-glow-cta {
-  0%, 100% { box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.5), 0 0 40px rgba(var(--color-primary-rgb), 0.3); }
-  50% { box-shadow: 0 0 35px rgba(var(--color-primary-rgb), 0.7), 0 0 60px rgba(var(--color-primary-rgb), 0.4); }
+  0%, 100% { box-shadow: 0 0 20px rgb(var(--color-primary-rgb) / 0.5), 0 0 40px rgb(var(--color-primary-rgb) / 0.3); }
+  50% { box-shadow: 0 0 35px rgb(var(--color-primary-rgb) / 0.7), 0 0 60px rgb(var(--color-primary-rgb) / 0.4); }
 }
 .pulse-glow { animation: pulse-glow-cta 2s ease-in-out infinite; }
 

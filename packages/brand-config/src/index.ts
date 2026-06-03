@@ -96,17 +96,24 @@ export function getActiveBrand(): BrandConfig {
   return getBrand(ACTIVE_BRAND_ID);
 }
 
+/**
+ * Returns space-separated RGB channels for use with CSS4 rgb(r g b / alpha) syntax
+ * and Tailwind's <alpha-value> pattern (e.g. "108 99 255").
+ */
 function hexToRgbChannels(hex: string): string {
   const clean = hex.replace('#', '');
-  if (clean.length !== 6) return '0,0,0';
+  if (clean.length !== 6) return '0 0 0';
   return [
     parseInt(clean.slice(0, 2), 16),
     parseInt(clean.slice(2, 4), 16),
     parseInt(clean.slice(4, 6), 16),
-  ].join(',');
+  ].join(' ');
 }
 
-/** Returns inline CSS declarations (no braces) for all brand color tokens. */
+/**
+ * Returns inline CSS declarations (no braces) for all brand color tokens.
+ * Inject into :root via a <style> tag in the document <head>.
+ */
 export function getBrandCssVars(brand: BrandConfig): string {
   const { colors } = brand;
   return [

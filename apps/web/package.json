@@ -10,6 +10,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@mobilidad/brand-config": "*",
     "@clerk/nextjs": "^5.7.6",
     "@googlemaps/js-api-loader": "^1.16.6",
     "@hookform/resolvers": "^3.9.0",

@@ -1,3 +1,6 @@
+import { mobilidadBrand } from './brands/mobilidad';
+import { ridemeBrand } from './brands/rideme';
+
 export interface BrandColors {
   primary: string;
   primaryForeground: string;
@@ -76,14 +79,52 @@ export interface BrandConfig {
 export { mobilidadBrand } from './brands/mobilidad';
 export { ridemeBrand } from './brands/rideme';
 
+const BRAND_REGISTRY: Record<string, BrandConfig> = {
+  mobilidad: mobilidadBrand,
+  rideme: ridemeBrand,
+};
+
+export const ACTIVE_BRAND_ID = process.env.BRAND_ID ?? 'mobilidad';
+
 export function getBrand(id: string): BrandConfig {
-  const brands: Record<string, BrandConfig> = {
-    mobilidad: require('./brands/mobilidad').mobilidadBrand,
-    rideme: require('./brands/rideme').ridemeBrand,
-  };
-  const brand = brands[id];
-  if (!brand) throw new Error(`Brand "${id}" not found. Available: ${Object.keys(brands).join(', ')}`);
+  const brand = BRAND_REGISTRY[id];
+  if (!brand) throw new Error(`Brand "${id}" not found. Available: ${Object.keys(BRAND_REGISTRY).join(', ')}`);
   return brand;
 }
 
-export const ACTIVE_BRAND_ID = process.env.BRAND_ID ?? 'mobilidad';
+export function getActiveBrand(): BrandConfig {
+  return getBrand(ACTIVE_BRAND_ID);
+}
+
+function hexToRgbChannels(hex: string): string {
+  const clean = hex.replace('#', '');
+  if (clean.length !== 6) return '0,0,0';
+  return [
+    parseInt(clean.slice(0, 2), 16),
+    parseInt(clean.slice(2, 4), 16),
+    parseInt(clean.slice(4, 6), 16),
+  ].join(',');
+}
+
+/** Returns inline CSS declarations (no braces) for all brand color tokens. */
+export function getBrandCssVars(brand: BrandConfig): string {
+  const { colors } = brand;
+  return [
+    `--color-primary:${colors.primary}`,
+    `--color-primary-rgb:${hexToRgbChannels(colors.primary)}`,
+    `--color-primary-foreground:${colors.primaryForeground}`,
+    `--color-secondary:${colors.secondary}`,
+    `--color-secondary-rgb:${hexToRgbChannels(colors.secondary)}`,
+    `--color-secondary-foreground:${colors.secondaryForeground}`,
+    `--color-accent:${colors.accent}`,
+    `--color-background:${colors.background}`,
+    `--color-surface:${colors.surface}`,
+    `--color-foreground:${colors.foreground}`,
+    `--color-muted:${colors.muted}`,
+    `--color-muted-foreground:${colors.mutedForeground}`,
+    `--color-border:${colors.border}`,
+    `--color-success:${colors.success}`,
+    `--color-warning:${colors.warning}`,
+    `--color-error:${colors.error}`,
+  ].join(';');
+}

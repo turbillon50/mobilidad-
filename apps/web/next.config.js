@@ -8,6 +8,7 @@ const withPWA = require('next-pwa')({
 
 const nextConfig = {
   reactStrictMode: true,
+  transpilePackages: ['@mobilidad/brand-config'],
   images: {
     domains: ['lh3.googleusercontent.com', 'firebasestorage.googleapis.com'],
     formats: ['image/avif', 'image/webp'],

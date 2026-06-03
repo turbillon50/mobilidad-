@@ -16,7 +16,6 @@ export default function OffersPage() {
   const [loading, setLoading] = useState(false);
   const [timeLeft, setTimeLeft] = useState(300);
 
-  // Countdown
   useEffect(() => {
     if (!activeRide?.offer_expiry_at) return;
     const expiry = new Date(activeRide.offer_expiry_at).getTime();
@@ -28,12 +27,9 @@ export default function OffersPage() {
     return () => clearInterval(interval);
   }, [activeRide?.offer_expiry_at]);
 
-  // Socket events
   useEffect(() => {
     if (!socket || !activeRide?.id) return;
-
     socket.emit('ride:join', { rideId: activeRide.id });
-
     socket.on('trip:offer_received', ({ offer }) => addOffer(offer));
     socket.on('trip:accepted', (data) => {
       setActiveRide({ ...activeRide, ...data, status: 'accepted' });
@@ -43,12 +39,12 @@ export default function OffersPage() {
       setActiveRide({ ...activeRide, status: 'expired' });
       router.push('/app');
     });
-
     return () => {
       socket.off('trip:offer_received');
       socket.off('trip:accepted');
       socket.off('trip:expired');
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket, activeRide?.id]);
 
   const handleAccept = async (offerId: string) => {
@@ -80,39 +76,38 @@ export default function OffersPage() {
   const secs = timeLeft % 60;
 
   return (
-    <div className="min-h-screen bg-[#0A0A0F] flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
-      <div className="safe-top px-4 pt-4 pb-3 border-b border-[rgba(255,255,255,0.06)]">
+      <div className="safe-top px-4 pt-4 pb-3 border-b border-white/[0.06]">
         <div className="flex items-center justify-between mb-3">
           <h1 className="font-black text-xl">Ofertas de choferes</h1>
-          <button onClick={handleCancel} className="text-[#8B8B9E] hover:text-[#FF4757] transition-colors">
+          <button onClick={handleCancel} className="text-muted-foreground hover:text-error transition-colors">
             <X size={22} />
           </button>
         </div>
 
-        {/* Route summary */}
         {activeRide && (
-          <div className="bg-[#111118] border border-[rgba(255,255,255,0.06)] rounded-2xl px-4 py-3 space-y-1.5">
+          <div className="bg-surface border border-white/[0.06] rounded-2xl px-4 py-3 space-y-1.5">
             <div className="flex items-center gap-2 text-sm">
-              <div className="w-2 h-2 rounded-full bg-[#6C63FF]" />
-              <span className="text-[#8B8B9E] truncate">{activeRide.origin_address ?? 'Origen'}</span>
+              <div className="w-2 h-2 rounded-full bg-primary" />
+              <span className="text-muted-foreground truncate">{activeRide.origin_address ?? 'Origen'}</span>
             </div>
             <div className="flex items-center gap-2 text-sm">
-              <MapPin size={10} className="text-[#00D4AA]" />
-              <span className="text-[#8B8B9E] truncate">{activeRide.destination_address ?? 'Destino'}</span>
+              <MapPin size={10} className="text-secondary" />
+              <span className="text-muted-foreground truncate">{activeRide.destination_address ?? 'Destino'}</span>
             </div>
             <div className="flex items-center justify-between pt-1">
-              <span className="text-xs text-[#8B8B9E]">Tu precio</span>
-              <span className="font-mono font-bold text-[#6C63FF]">${activeRide.proposed_price}</span>
+              <span className="text-xs text-muted-foreground">Tu precio</span>
+              <span className="font-mono font-bold text-primary">${activeRide.proposed_price}</span>
             </div>
           </div>
         )}
       </div>
 
       {/* Timer */}
-      <div className="flex items-center justify-center gap-2 py-3 bg-[rgba(108,99,255,0.06)] border-b border-[rgba(255,255,255,0.04)]">
-        <Clock size={14} className={timeLeft < 60 ? 'text-[#FF4757]' : 'text-[#8B8B9E]'} />
-        <span className={`text-sm font-mono font-bold ${timeLeft < 60 ? 'text-[#FF4757]' : 'text-[#8B8B9E]'}`}>
+      <div className="flex items-center justify-center gap-2 py-3 bg-primary/[0.06] border-b border-white/[0.04]">
+        <Clock size={14} className={timeLeft < 60 ? 'text-error' : 'text-muted-foreground'} />
+        <span className={`text-sm font-mono font-bold ${timeLeft < 60 ? 'text-error' : 'text-muted-foreground'}`}>
           Busqueda expira en {mins}:{secs.toString().padStart(2, '0')}
         </span>
       </div>
@@ -122,8 +117,8 @@ export default function OffersPage() {
         <AnimatePresence>
           {offers.length === 0 ? (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center justify-center h-48 text-center">
-              <Loader2 size={40} className="text-[#6C63FF] animate-spin mb-4" />
-              <p className="text-[#8B8B9E]">Buscando choferes cerca de ti...</p>
+              <Loader2 size={40} className="text-primary animate-spin mb-4" />
+              <p className="text-muted-foreground">Buscando choferes cerca de ti...</p>
               <p className="text-xs text-[#4A4A5A] mt-1">Las ofertas aparecerán aquí</p>
             </motion.div>
           ) : (

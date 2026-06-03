@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import { MapView } from '@/components/maps/MapView';
 import { OnlineToggle } from '@/components/driver/OnlineToggle';
 import { IncomingOfferModal } from '@/components/driver/IncomingOfferModal';
@@ -32,7 +31,9 @@ export default function DriverDashboard() {
   const [incomingRide, setIncomingRide] = useState<IncomingRide | null>(null);
   const [todayEarnings, setTodayEarnings] = useState(0);
 
-  const center = location ? { lat: location.latitude, lng: location.longitude } : { lat: 19.4326, lng: -99.1332 };
+  const center = location
+    ? { lat: location.latitude, lng: location.longitude }
+    : { lat: 19.4326, lng: -99.1332 };
 
   useEffect(() => {
     api.get('/drivers/me/earnings').then(res => {
@@ -79,26 +80,22 @@ export default function DriverDashboard() {
     }
   };
 
-  const handleAccept = async (rideId: string, _price: number) => {
-    await api.post('/offers', {
-      rideId, offeredPrice: _price, offerType: 'accept',
-    }).catch(() => {});
+  const handleAccept = async (rideId: string, price: number) => {
+    await api.post('/offers', { rideId, offeredPrice: price, offerType: 'accept' }).catch(() => {});
     setIncomingRide(null);
   };
 
   const handleCounter = async (rideId: string, price: number) => {
-    await api.post('/offers', {
-      rideId, offeredPrice: price, offerType: 'counter',
-    }).catch(() => {});
+    await api.post('/offers', { rideId, offeredPrice: price, offerType: 'counter' }).catch(() => {});
     setIncomingRide(null);
   };
 
-  const handleReject = (rideId: string) => {
+  const handleReject = (_rideId: string) => {
     setIncomingRide(null);
   };
 
   return (
-    <div className="h-screen bg-[#0A0A0F] flex flex-col overflow-hidden">
+    <div className="h-screen bg-background flex flex-col overflow-hidden">
       {/* Map */}
       <div className="flex-1 relative">
         <MapView
@@ -110,16 +107,16 @@ export default function DriverDashboard() {
         {/* Top bar */}
         <div className="absolute top-0 left-0 right-0 safe-top px-4 pt-4">
           <div className="flex items-center justify-between">
-            <div className="bg-[rgba(17,17,24,0.9)] backdrop-blur-xl rounded-2xl px-4 py-2.5 border border-[rgba(255,255,255,0.08)]">
-              <div className="text-xs text-[#8B8B9E]">Hoy</div>
-              <div className="font-mono font-black text-lg bg-gradient-to-r from-[#6C63FF] to-[#00D4AA] bg-clip-text text-transparent">
+            <div className="glass rounded-2xl px-4 py-2.5">
+              <div className="text-xs text-muted-foreground">Hoy</div>
+              <div className="font-mono font-black text-lg gradient-text">
                 ${todayEarnings.toFixed(2)}
               </div>
             </div>
             {subscriptionStatus !== 'active' && (
-              <div className="flex items-center gap-2 bg-[rgba(255,71,87,0.15)] border border-[rgba(255,71,87,0.3)] rounded-2xl px-3 py-2">
-                <AlertCircle size={14} className="text-[#FF4757]" />
-                <span className="text-xs text-[#FF4757] font-medium">Sin suscripción</span>
+              <div className="flex items-center gap-2 bg-error/15 border border-error/30 rounded-2xl px-3 py-2">
+                <AlertCircle size={14} className="text-error" />
+                <span className="text-xs text-error font-medium">Sin suscripción</span>
               </div>
             )}
           </div>
@@ -127,7 +124,7 @@ export default function DriverDashboard() {
 
         {/* Online toggle */}
         <div className="absolute bottom-28 left-1/2 -translate-x-1/2">
-          <div className="bg-[rgba(17,17,24,0.95)] backdrop-blur-xl rounded-3xl px-8 py-5 border border-[rgba(255,255,255,0.08)]">
+          <div className="glass-strong rounded-3xl px-8 py-5">
             <OnlineToggle
               isOnline={isOnline}
               onToggle={handleToggle}

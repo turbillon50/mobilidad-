@@ -60,15 +60,15 @@ export default function SchedulePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0F] pb-24">
-      <div className="safe-top px-4 pt-4 pb-4 border-b border-[rgba(255,255,255,0.06)]">
+    <div className="min-h-screen bg-background pb-24">
+      <div className="safe-top px-4 pt-4 pb-4 border-b border-white/[0.06]">
         <div className="flex items-center gap-3">
-          <Link href="/app" className="text-[#8B8B9E] hover:text-white transition-colors">
+          <Link href="/app" className="text-muted-foreground hover:text-white transition-colors">
             <ArrowLeft size={22} />
           </Link>
           <div>
             <h1 className="font-black text-xl">Programar Viaje</h1>
-            <p className="text-xs text-[#8B8B9E]">Hasta 7 días de anticipación</p>
+            <p className="text-xs text-muted-foreground">Hasta 7 días de anticipación</p>
           </div>
         </div>
       </div>
@@ -79,10 +79,10 @@ export default function SchedulePage() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-[#111118] border border-[rgba(255,255,255,0.06)] rounded-2xl overflow-hidden"
+            className="bg-surface border border-white/[0.06] rounded-2xl overflow-hidden"
           >
-            <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[rgba(255,255,255,0.04)]">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#6C63FF] flex-shrink-0" />
+            <div className="flex items-center gap-3 px-4 py-3.5 border-b border-white/[0.04]">
+              <div className="w-2.5 h-2.5 rounded-full bg-primary flex-shrink-0" />
               <input
                 type="text"
                 placeholder="¿Desde dónde sales?"
@@ -92,7 +92,7 @@ export default function SchedulePage() {
               />
             </div>
             <div className="flex items-center gap-3 px-4 py-3.5">
-              <MapPin size={11} className="text-[#00D4AA] flex-shrink-0" />
+              <MapPin size={11} className="text-secondary flex-shrink-0" />
               <input
                 type="text"
                 placeholder="¿A dónde vas?"
@@ -110,10 +110,10 @@ export default function SchedulePage() {
             transition={{ delay: 0.08 }}
             className="grid grid-cols-2 gap-3"
           >
-            <div className="bg-[#111118] border border-[rgba(255,255,255,0.06)] rounded-2xl px-4 py-3.5">
+            <div className="bg-surface border border-white/[0.06] rounded-2xl px-4 py-3.5">
               <div className="flex items-center gap-2 mb-2">
-                <Calendar size={13} className="text-[#6C63FF]" />
-                <span className="text-xs text-[#8B8B9E]">Fecha</span>
+                <Calendar size={13} className="text-primary" />
+                <span className="text-xs text-muted-foreground">Fecha</span>
               </div>
               <input
                 type="date"
@@ -124,10 +124,10 @@ export default function SchedulePage() {
                 className="w-full bg-transparent text-sm outline-none text-white [color-scheme:dark]"
               />
             </div>
-            <div className="bg-[#111118] border border-[rgba(255,255,255,0.06)] rounded-2xl px-4 py-3.5">
+            <div className="bg-surface border border-white/[0.06] rounded-2xl px-4 py-3.5">
               <div className="flex items-center gap-2 mb-2">
-                <Clock size={13} className="text-[#6C63FF]" />
-                <span className="text-xs text-[#8B8B9E]">Hora</span>
+                <Clock size={13} className="text-primary" />
+                <span className="text-xs text-muted-foreground">Hora</span>
               </div>
               <input
                 type="time"
@@ -143,14 +143,14 @@ export default function SchedulePage() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.14 }}
-            className="bg-[#111118] border border-[rgba(255,255,255,0.06)] rounded-2xl px-4 py-3.5"
+            className="bg-surface border border-white/[0.06] rounded-2xl px-4 py-3.5"
           >
             <div className="flex items-center gap-2 mb-2">
-              <DollarSign size={13} className="text-[#00D4AA]" />
-              <span className="text-xs text-[#8B8B9E]">Tu precio propuesto</span>
+              <DollarSign size={13} className="text-secondary" />
+              <span className="text-xs text-muted-foreground">Tu precio propuesto</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-[#8B8B9E] font-mono">$</span>
+              <span className="text-muted-foreground font-mono">$</span>
               <input
                 type="number"
                 placeholder="0.00"
@@ -158,7 +158,7 @@ export default function SchedulePage() {
                 min="1"
                 step="0.50"
                 onChange={e => setPrice(e.target.value)}
-                className="flex-1 bg-transparent text-2xl font-black font-mono outline-none placeholder-[#2A2A3A] text-[#6C63FF]"
+                className="flex-1 bg-transparent text-2xl font-black font-mono outline-none placeholder-[#2A2A3A] text-primary"
               />
             </div>
             <p className="text-xs text-[#4A4A5A] mt-1">Los choferes podrán aceptar o hacer contra-oferta</p>
@@ -178,8 +178,8 @@ export default function SchedulePage() {
                 onClick={() => setPaymentMethod(method)}
                 className={`flex items-center justify-center gap-2 py-3.5 rounded-2xl border transition-all ${
                   paymentMethod === method
-                    ? 'border-[#6C63FF] bg-[rgba(108,99,255,0.1)] text-white'
-                    : 'border-[rgba(255,255,255,0.06)] bg-[#111118] text-[#8B8B9E]'
+                    ? 'border-primary bg-primary/10 text-white'
+                    : 'border-white/[0.06] bg-surface text-muted-foreground'
                 }`}
               >
                 {method === 'cash' ? <Banknote size={16} /> : <CreditCard size={16} />}
@@ -192,7 +192,7 @@ export default function SchedulePage() {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-sm text-[#FF4757] text-center"
+              className="text-sm text-red-500 text-center"
             >
               {error}
             </motion.p>
@@ -204,7 +204,7 @@ export default function SchedulePage() {
             transition={{ delay: 0.26 }}
             type="submit"
             disabled={loading}
-            className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#6C63FF] to-[#00D4AA] font-bold text-base disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full py-4 rounded-2xl bg-gradient-cta font-bold text-base disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {loading ? (
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -222,17 +222,17 @@ export default function SchedulePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.35 }}
-          className="mt-4 bg-[rgba(108,99,255,0.06)] border border-[rgba(108,99,255,0.15)] rounded-2xl p-4 space-y-2"
+          className="mt-4 bg-primary/[0.06] border border-primary/15 rounded-2xl p-4 space-y-2"
         >
-          <p className="text-xs font-semibold text-[#6C63FF]">¿Cómo funciona?</p>
+          <p className="text-xs font-semibold text-primary">¿Cómo funciona?</p>
           {[
             'Programa tu viaje con hasta 7 días de anticipación',
             'Recibirás ofertas de choferes 15 minutos antes de tu viaje',
             'Elige al chofer con el mejor precio y calificación',
             'Recibe notificación cuando tu chofer esté en camino',
           ].map((tip, i) => (
-            <div key={i} className="flex items-start gap-2 text-xs text-[#8B8B9E]">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#6C63FF] mt-1 flex-shrink-0" />
+            <div key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
+              <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1 flex-shrink-0" />
               {tip}
             </div>
           ))}
